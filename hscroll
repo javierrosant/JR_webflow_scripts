@@ -1,0 +1,34 @@
+// Añade un oyente de eventos al documento que se ejecuta una vez que el DOM 
+// (Modelo de Objeto de Documento) está completamente cargado y listo.
+document.addEventListener("DOMContentLoaded", function() {
+
+    // Muestra un mensaje en la consola del navegador indicando que el DOM está cargado.
+    console.log("El DOM está cargado");
+
+    // Obtiene una referencia al elemento 'documentElement' (que representa la etiqueta <html>) 
+    // y lo almacena en la constante 'container'.
+    const container = document.documentElement;
+
+    // Añade un oyente de eventos a la ventana para el evento 'wheel', 
+    // que se dispara cuando el usuario intenta desplazarse utilizando la rueda del ratón o un trackpad.
+    window.addEventListener('wheel', function(e) {
+
+        // Muestra en la consola la cantidad de desplazamiento horizontal detectado.
+        console.log("Evento wheel detectado", e.deltaX);
+
+        // Comprueba si hubo un desplazamiento horizontal.
+        if (e.deltaX !== 0) {
+
+            // Si hay un desplazamiento horizontal, muestra la cantidad exacta en la consola.
+            console.log("Desplazamiento horizontal detectado:", e.deltaX);
+
+            // Ajusta la posición de desplazamiento vertical ('scrollTop') del contenedor (en este caso, <html>) 
+            // basándose en la cantidad de desplazamiento horizontal detectada.
+            container.scrollTop += e.deltaX;
+
+            // Previene el comportamiento de desplazamiento predeterminado del navegador.
+            // En este contexto, evita el desplazamiento horizontal.
+            e.preventDefault();
+        }
+    });
+});
