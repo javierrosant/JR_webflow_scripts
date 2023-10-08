@@ -1,33 +1,25 @@
-// Añade un oyente de eventos al documento que se ejecuta una vez que el DOM 
-// (Modelo de Objeto de Documento) está completamente cargado y listo.
+// Añade un oyente al documento para asegurarse de que el script se ejecute una vez que el contenido de la página esté completamente cargado.
 document.addEventListener("DOMContentLoaded", function() {
 
-    // Muestra un mensaje en la consola del navegador indicando que el DOM está cargado.
-    console.log("El DOM está cargado");
-
-    // Obtiene una referencia al elemento 'documentElement' (que representa la etiqueta <html>) 
-    // y lo almacena en la constante 'container'.
+    // Obtiene una referencia al elemento raíz del documento (generalmente representa la etiqueta <html>).
+    // Esto es necesario porque más adelante queremos modificar su propiedad de desplazamiento vertical.
     const container = document.documentElement;
 
-    // Añade un oyente de eventos a la ventana para el evento 'wheel', 
-    // que se dispara cuando el usuario intenta desplazarse utilizando la rueda del ratón o un trackpad.
+    // Añade un oyente al evento 'wheel', que se activa cada vez que el usuario intenta desplazarse usando la rueda del ratón o un trackpad.
     window.addEventListener('wheel', function(e) {
 
-        // Muestra en la consola la cantidad de desplazamiento horizontal detectado.
-        console.log("Evento wheel detectado", e.deltaX);
+        // Antes de modificar el comportamiento de desplazamiento, verifica el ancho de la ventana.
+        // Si el ancho es menor de 992px, simplemente retorna (sale del manejador del evento) y no hace nada más.
+        if (window.innerWidth < 992) {
+            return;
+        }
 
-        // Comprueba si hubo un desplazamiento horizontal.
+        // Si hay un desplazamiento horizontal (es decir, e.deltaX es diferente de 0), 
+        // convertimos ese desplazamiento en un desplazamiento vertical.
         if (e.deltaX !== 0) {
-
-            // Si hay un desplazamiento horizontal, muestra la cantidad exacta en la consola.
-            console.log("Desplazamiento horizontal detectado:", e.deltaX);
-
-            // Ajusta la posición de desplazamiento vertical ('scrollTop') del contenedor (en este caso, <html>) 
-            // basándose en la cantidad de desplazamiento horizontal detectada.
+            // Modifica el desplazamiento vertical del contenedor basado en cuánto intentó desplazarse el usuario horizontalmente.
             container.scrollTop += e.deltaX;
-
-            // Previene el comportamiento de desplazamiento predeterminado del navegador.
-            // En este contexto, evita el desplazamiento horizontal.
+            // Previne el comportamiento predeterminado del desplazamiento horizontal para que solo se aplique el desplazamiento vertical que acabamos de definir.
             e.preventDefault();
         }
     });
